@@ -10,6 +10,7 @@ class ApiEndpoints {
 
   // Barber
   static const String barber = '/api/v1/barber';
+  static const String barberAvailable = '/api/v1/barber/available'; // includes kursi info
   static String barberById(String id) => '/api/v1/barber/$id';
 
   // Layanan

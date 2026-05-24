@@ -24,7 +24,9 @@ class BookingRepository {
     }
   }
 
-  // Ambil list barber (GET /api/v1/barber)
+  // Ambil list barber aktif (GET /api/v1/barber)
+  // Backend sudah filter status='aktif', dan booking controller
+  // akan otomatis temukan kursi dari barber_id
   Future<List<BarberModel>> getBarber() async {
     try {
       final response = await _dio.get(ApiEndpoints.barber);

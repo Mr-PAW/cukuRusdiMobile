@@ -32,14 +32,22 @@ class AntreanItem {
   );
 
   factory AntreanItem.fromJson(Map<String, dynamic> json) {
-    // Ambil estimasi_detik dari server (backend demo mode sudah kirim dalam detik)
-    final detik = json['estimasi_detik'] != null
-        ? (json['estimasi_detik'] is int
-            ? json['estimasi_detik']
-            : int.tryParse(json['estimasi_detik'].toString()) ?? 0)
-        : (json['estimasi_menit'] is int
-            ? json['estimasi_menit']
-            : int.tryParse(json['estimasi_menit'].toString()) ?? 0);
+    // Backend mengirim 'estimasi_menit' (satuan menit).
+    // Kita konversi ke detik untuk countdown timer di app.
+    // Kalau backend kirim 'estimasi_detik' langsung, pakai itu.
+    int detik;
+    if (json['estimasi_detik'] != null) {
+      // Sudah dalam detik, pakai langsung
+      detik = json['estimasi_detik'] is int
+          ? json['estimasi_detik']
+          : int.tryParse(json['estimasi_detik'].toString()) ?? 0;
+    } else {
+      // estimasi_menit → kalikan 60 untuk dapat detik
+      final menit = json['estimasi_menit'] is int
+          ? json['estimasi_menit'] as int
+          : int.tryParse(json['estimasi_menit'].toString()) ?? 0;
+      detik = menit * 60;
+    }
 
     return AntreanItem(
       id: (json['_id'] ?? json['id'] ?? '').toString(),

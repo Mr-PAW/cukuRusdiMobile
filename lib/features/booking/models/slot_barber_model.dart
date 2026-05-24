@@ -1,8 +1,11 @@
+// lib/features/booking/models/slot_barber_model.dart
+// Model barber — parse data dari /api/v1/barber
+// Response shape: { id, nama, foto_url, status, rating }
 class BarberModel {
   final String id;
   final String nama;
-  final String? fotoUrl; // diabaikan di UI, tapi tetap di-parse
-  final String status; // misal: 'aktif', 'nonaktif'
+  final String? fotoUrl;
+  final String status; // 'aktif' | 'nonaktif'
   final double rating;
 
   BarberModel({
@@ -13,7 +16,7 @@ class BarberModel {
     required this.rating,
   });
 
-  // Barber tersedia kalau statusnya 'aktif'
+  // Barber bisa dipilih kalau statusnya aktif
   bool get tersedia => status == 'aktif';
 
   factory BarberModel.fromJson(Map<String, dynamic> json) {

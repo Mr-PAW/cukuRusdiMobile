@@ -32,7 +32,7 @@ class AuthRepository {
     String password,
   ) async {
     try {
-      final res = await _dio.post(
+      await _dio.post(
         ApiEndpoints.register,
         data: {
           'nama': nama,
