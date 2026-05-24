@@ -12,6 +12,10 @@ class ApiEndpoints {
   static const String barber = '/api/v1/barber';
   static String barberById(String id) => '/api/v1/barber/$id';
 
+  // Layanan
+  static const String layanan = '/api/v1/layanan';
+  static String layananById(String id) => '/api/v1/layanan/$id';
+
   // Kursi
   static const String kursi = '/api/v1/kursi';
   static String kursiStatus(String id) => '/api/v1/kursi/$id/status';
