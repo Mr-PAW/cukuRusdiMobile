@@ -1,7 +1,8 @@
+import 'package:cukurusdi/features/antrean/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../customer/screens/customer_shell_screen.dart';
+// import '../../antrean/screens/home_screen.dart';
 import '../providers/auth_provider.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -48,7 +49,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     if (state.isLoggedIn) {
       Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const CustomerShellScreen()),
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
         (route) => false,
       );
     }

@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
+// lib/main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'core/storage/secure_storage.dart';
+import 'features/auth/providers/auth_provider.dart';
 import 'features/auth/screens/login_screen.dart';
-import 'features/customer/screens/customer_shell_screen.dart';
+import 'features/antrean/screens/home_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -15,67 +15,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Barbershop App',
       debugShowCheckedModeBanner: false,
-      title: 'Cukur Rusdi',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFFF9A825),
-          brightness: Brightness.dark,
-        ),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
         useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFF0B0B0B),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF0F0F0F),
-          foregroundColor: Colors.white,
-          surfaceTintColor: Colors.transparent,
-        ),
       ),
-      home: const AppEntry(),
+      home: const _RootRedirect(),
     );
   }
 }
 
-class AppEntry extends StatelessWidget {
-  const AppEntry({super.key});
+// Auto redirect berdasarkan status login
+class _RootRedirect extends ConsumerWidget {
+  const _RootRedirect();
 
   @override
-  Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return const LoginScreen();
-    }
-
-    return FutureBuilder<String?>(
-      future: SecureStorage.getToken(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return const LoginScreen();
-        }
-
-        if (!snapshot.hasData) {
-          return const _StartupSplash();
-        }
-
-        return snapshot.data == null
-            ? const LoginScreen()
-            : const CustomerShellScreen();
-      },
-    );
-  }
-}
-
-class _StartupSplash extends StatelessWidget {
-  const _StartupSplash();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: 28,
-          height: 28,
-          child: CircularProgressIndicator(strokeWidth: 2.5),
-        ),
-      ),
-    );
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+    return authState.isLoggedIn ? const HomeScreen() : const LoginScreen();
   }
 }
