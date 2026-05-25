@@ -43,6 +43,8 @@ class AntreanNotifier extends StateNotifier<AntreanState> {
 
   AntreanNotifier(this._repo) : super(const AntreanState());
 
+  final Set<String> _finishedLocalItems = {};
+
   // Set state aman, pastikan notifier masih ter-mount di widget tree
   void _safeSetState(AntreanState newState) {
     if (!mounted) return;
@@ -65,7 +67,9 @@ class AntreanNotifier extends StateNotifier<AntreanState> {
             item.id: item.estimasiDetik,
       };
 
-      final mergedItems = serverItems.map((serverItem) {
+      final mergedItems = serverItems
+          .where((item) => !_finishedLocalItems.contains(item.id))
+          .map((serverItem) {
         final localDetik = localCountdowns[serverItem.id];
         if (localDetik != null && serverItem.status == 'menunggu') {
           return serverItem.copyWithDetik(localDetik);
@@ -104,6 +108,7 @@ class AntreanNotifier extends StateNotifier<AntreanState> {
           final newDetik = item.estimasiDetik - 1;
           if (newDetik <= 0) {
             adaYangHabis = true;
+            _finishedLocalItems.add(item.id);
             // Item tidak dimasukkan ke updatedItems (Otomatis hilang dari list)
           } else {
             updatedItems.add(item.copyWithDetik(newDetik));
