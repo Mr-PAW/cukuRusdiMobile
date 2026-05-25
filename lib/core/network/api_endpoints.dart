@@ -35,6 +35,9 @@ class ApiEndpoints {
   static String antreanByBooking(String id) => '/api/v1/antrean/$id';
 
   // Notifikasi
+  static const String notifikasiMe = '/api/v1/notifikasi/me';
+  static const String notifikasiSemuaDibaca = '/api/v1/notifikasi/me/baca-semua';
   static String notifikasi(String id) => '/api/v1/notifikasi/$id';
   static String notifikasiDibaca(String id) => '/api/v1/notifikasi/$id/baca';
+  static String notifikasiDelete(String id) => '/api/v1/notifikasi/$id';
 }
